@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Rentals - Cars</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html">
+          <img class="logo-img" src="./LOGO.png" alt="ZAM" />
+          <span class="logo-word">ZAM<span>Rentals</span></span>
+        </a>
+        <nav class="nav">
+          <a href="./index.html">Cars</a>
+          <a href="./tickets.html">Support</a>
+          <a id="navMessagesLink" href="./messages.html">Messages</a>
+          <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
+          <span id="navMe" class="pill" title="Signed in as"></span>
+          <a id="navAuthLink" href="./login.html">Login</a>
+          <button id="navLogoutBtn" class="btn-link" hidden>Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="kicker">Premium rentals • On demand</div>
+            <h1 class="title">Need a ride? We’ve got you covered.</h1>
+            <p class="subtitle">
+              Browse the fleet, view full specs, and message support if you want a custom rental.
+            </p>
+          </div>
+        </section>
+
+        <div class="layout">
+          <section class="card">
+            <div class="card-inner">
+              <div class="kicker">Search & filter</div>
+              <h2 class="section-title">Find your car</h2>
+              <div class="controls" style="margin-top: 14px;">
+                <div class="field" style="grid-column: span 12;">
+                  <div class="label">Search</div>
+                  <input id="q" class="input" placeholder="Search by model, brand, or feature" />
+                </div>
+                <div class="field" style="grid-column: span 12;">
+                  <div class="label">Brand</div>
+                  <select id="brand"></select>
+                </div>
+                <div class="field" style="grid-column: span 12;">
+                  <div class="label">Sort</div>
+                  <select id="sort">
+                    <option value="high">Price: High → Low</option>
+                    <option value="low">Price: Low → High</option>
+                  </select>
+                </div>
+              </div>
+              <div class="notice">
+                Need something specific? Message ZAM through Support and continue the chat in Messages.
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-inner">
+              <div class="row">
+                <div>
+                  <div class="kicker">Fleet</div>
+                  <h2 class="section-title">Available today</h2>
+                </div>
+                <a class="btn secondary" href="./messages.html">Message ZAM</a>
+              </div>
+
+              <div class="error" id="error" hidden></div>
+
+              <div style="margin-top: 18px;">
+                <div class="kicker">Featured</div>
+                <div id="featured" class="grid"></div>
+              </div>
+
+              <div style="margin-top: 22px;">
+                <div class="kicker">All cars</div>
+                <div id="cars" class="grid"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer">
+          <div class="container">
+            ZAM Rentals
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="./home.js"></script>
+  </body>
+</html>

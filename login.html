@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Rentals - Login</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html">
+          <img class="logo-img" src="./LOGO.png" alt="ZAM" />
+          <span class="logo-word">ZAM<span>Rentals</span></span>
+        </a>
+        <nav class="nav">
+          <a href="./index.html">Cars</a>
+          <a href="./tickets.html">Support</a>
+          <a href="./messages.html">Messages</a>
+          <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
+          <span id="navMe" class="pill" title="Signed in as"></span>
+          <a id="navAuthLink" href="./login.html">Login</a>
+          <button id="navLogoutBtn" class="btn-link" hidden>Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="kicker">Welcome back</div>
+            <h1 class="title" style="margin-bottom: 6px;">Sign in to ZAM</h1>
+            <p class="subtitle">Use your email and password to continue.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-inner">
+            <div class="row">
+              <div>
+                <div class="kicker" id="modeKicker">Login</div>
+                <h2 style="margin: 6px 0 0; font-size: 18px; font-weight: 800;" id="modeTitle">Log in</h2>
+              </div>
+            </div>
+
+            <div class="controls" style="margin-top: 14px;">
+              <div id="signupFields"></div>
+              <div class="field" style="grid-column: span 12;">
+                <div class="label">Email</div>
+                <input id="email" class="input" placeholder="you@example.com" autocomplete="email" />
+              </div>
+              <div class="field" style="grid-column: span 12;">
+                <div class="label">Password</div>
+                <input id="password" class="input" type="password" placeholder="••••••••" autocomplete="current-password" />
+              </div>
+
+              <div class="field" style="grid-column: span 12;">
+                <button id="submit" class="btn" type="button">Log in</button>
+              </div>
+
+              <div class="field" style="grid-column: span 12;">
+                <button id="toggle" class="btn secondary" type="button">Don't have an account? Create one</button>
+              </div>
+            </div>
+
+            <div class="error" id="error" hidden></div>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div class="container">ZAM Rentals</div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="./login.js"></script>
+  </body>
+</html>

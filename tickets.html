@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Rentals - Support</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html">
+          <img class="logo-img" src="./LOGO.png" alt="ZAM" />
+          <span class="logo-word">ZAM<span>Rentals</span></span>
+        </a>
+        <nav class="nav">
+          <a href="./index.html">Cars</a>
+          <a href="./tickets.html">Support</a>
+          <a id="navMessagesLink" href="./messages.html">Messages</a>
+          <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
+          <span id="navMe" class="pill" title="Signed in as"></span>
+          <a id="navAuthLink" href="./login.html">Login</a>
+          <button id="navLogoutBtn" class="btn-link" hidden>Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="kicker">Inquiries</div>
+            <h1 class="title">Send an inquiry to ZAM</h1>
+            <p class="subtitle">Tell us what you need. We’ll reply in your messages.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-inner">
+            <div class="row">
+              <div>
+                <div class="kicker">New inquiry</div>
+                <div class="notice" id="contextText" style="margin-top: 6px;"></div>
+              </div>
+            </div>
+
+            <div class="controls" style="margin-top: 14px;">
+              <div class="field" style="grid-column: span 12;">
+                <div class="label">Subject</div>
+                <input id="subject" class="input" placeholder="Short title, e.g. Delivery timing" />
+              </div>
+              <div class="field" style="grid-column: span 12;">
+                <div class="label">Details</div>
+                <textarea id="description" class="input" rows="5" placeholder="Describe your question or request" style="resize: vertical;"></textarea>
+              </div>
+
+              <div class="field" id="licenseField" style="grid-column: span 12;" hidden>
+                <div class="label">Driver's license (required for car-linked tickets)</div>
+                <input id="license" class="input" type="file" accept="image/*" />
+                <div class="notice">Pick an image file. It will be uploaded as a data URL (base64) like the mobile app.</div>
+              </div>
+
+              <div class="field" style="grid-column: span 12;">
+                <button id="submit" class="btn" type="button">Send inquiry</button>
+              </div>
+            </div>
+
+            <div class="error" id="error" hidden></div>
+
+            <div style="margin-top: 24px;">
+              <div class="row" style="align-items: flex-end;">
+                <div>
+                  <div class="kicker">Your inquiries</div>
+                  <h2 style="margin: 6px 0 0; font-size: 18px; font-weight: 800;">Recent</h2>
+                </div>
+                <button id="refresh" class="btn secondary" type="button">Refresh</button>
+              </div>
+              <div class="notice" id="emailNote"></div>
+              <div class="grid" id="tickets"></div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div class="container">ZAM Rentals</div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="./tickets.js"></script>
+  </body>
+</html>

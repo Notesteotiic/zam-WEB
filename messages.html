@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Rentals - Messages</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html">
+          <img class="logo-img" src="./LOGO.png" alt="ZAM" />
+          <span class="logo-word">ZAM<span>Rentals</span></span>
+        </a>
+        <nav class="nav">
+          <a href="./index.html">Cars</a>
+          <a href="./tickets.html">Support</a>
+          <a id="navMessagesLink" href="./messages.html">Messages</a>
+          <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
+          <span id="navMe" class="pill" title="Signed in as"></span>
+          <a id="navAuthLink" href="./login.html">Login</a>
+          <button id="navLogoutBtn" class="btn-link" hidden>Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="kicker">Inquiries</div>
+            <h1 class="title">Your chats with ZAM</h1>
+            <p class="subtitle">Chat with ZAM about your bookings and questions.</p>
+          </div>
+        </section>
+
+        <div class="layout">
+          <section class="card">
+            <div class="card-inner">
+              <div class="row" style="align-items: flex-end;">
+                <div>
+                  <div class="kicker">Inbox</div>
+                  <h2 class="section-title">Active inquiries</h2>
+                </div>
+                <button id="refresh" class="btn secondary" type="button">Refresh</button>
+              </div>
+              <div class="notice" id="emailNote"></div>
+              <div class="error" id="error" hidden></div>
+              <div id="list" class="grid"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-inner">
+              <div class="kicker">Tip</div>
+              <h2 class="section-title">No inquiries yet?</h2>
+              <div class="notice">
+                Use Support to send an inquiry to ZAM. Your conversations will appear here.
+              </div>
+              <div style="margin-top: 14px; display:flex; gap: 10px; flex-wrap: wrap;">
+                <a class="btn" href="./tickets.html">Create a ticket</a>
+                <a class="btn secondary" href="./index.html">Browse cars</a>
+              </div>
+              <div class="notice" style="margin-top: 16px;">
+                This page refreshes automatically every few seconds.
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer">
+          <div class="container">ZAM Rentals</div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="./messages.js"></script>
+  </body>
+</html>

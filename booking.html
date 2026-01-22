@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Rentals - Booking</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html">
+          <img class="logo-img" src="./LOGO.png" alt="ZAM" />
+          <span class="logo-word">ZAM<span>Rentals</span></span>
+        </a>
+        <nav class="nav">
+          <a href="./index.html">Cars</a>
+          <a href="./tickets.html">Support</a>
+          <a id="navMessagesLink" href="./messages.html">Messages</a>
+          <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
+          <span id="navMe" class="pill" title="Signed in as"></span>
+          <a id="navAuthLink" href="./login.html">Login</a>
+          <button id="navLogoutBtn" class="btn-link" hidden>Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="kicker">Booking</div>
+            <h1 class="title" id="carName">Book this car</h1>
+            <p class="subtitle" id="carMeta"></p>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-inner">
+            <div class="row">
+              <div>
+                <div class="kicker">Trip details</div>
+                <div class="notice" id="tripNotice">Choose your pickup and drop-off dates.</div>
+              </div>
+            </div>
+
+            <div class="controls" style="margin-top: 14px;">
+              <div class="field" style="grid-column: span 6;">
+                <div class="label">Pickup date</div>
+                <input id="pickupDate" class="input" type="date" />
+              </div>
+              <div class="field" style="grid-column: span 6;">
+                <div class="label">Drop-off date</div>
+                <input id="dropoffDate" class="input" type="date" />
+              </div>
+              <div class="field" style="grid-column: span 12;">
+                <div class="label">Summary</div>
+                <div id="rentalSummary" class="input">Select dates to see days and estimated price.</div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 24px;">
+              <div>
+                <div class="kicker">Map &amp; instructions</div>
+                <div class="notice">Pickup location pinned to the same spot used in the mobile app.</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px; border-radius: 14px; overflow: hidden; border: 1px solid #111827;">
+              <iframe
+                title="Pickup location map"
+                width="100%"
+                height="220"
+                style="border:0; display:block;"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=9.315556,123.2955&z=17&output=embed"
+              ></iframe>
+            </div>
+
+            <div class="row" style="margin-top: 24px;">
+              <div>
+                <div class="kicker">Driver details</div>
+                <div class="notice">Enter the main drivers information for this booking.</div>
+              </div>
+            </div>
+
+            <div class="controls" style="margin-top: 14px;">
+              <div class="field" style="grid-column: span 6;">
+                <div class="label">Given names</div>
+                <input id="driverGivenNames" class="input" placeholder="First and middle names" />
+              </div>
+              <div class="field" style="grid-column: span 6;">
+                <div class="label">Surname</div>
+                <input id="driverSurname" class="input" placeholder="Last name" />
+              </div>
+              <div class="field" style="grid-column: span 4;">
+                <div class="label">Age</div>
+                <input id="driverAge" class="input" type="number" min="18" max="120" placeholder="e.g. 30" />
+              </div>
+              <div class="field" style="grid-column: span 8;">
+                <div class="label">Email</div>
+                <input id="driverEmail" class="input" type="email" placeholder="you@example.com" />
+              </div>
+              <div class="field" style="grid-column: span 6;">
+                <div class="label">Mobile</div>
+                <input id="driverMobile" class="input" placeholder="e.g. +63 900 000 0000" />
+              </div>
+              <div class="field" style="grid-column: span 6;">
+                <div class="label">Licence country/region</div>
+                <input id="driverLicenceCountryRegion" class="input" placeholder="e.g. Philippines" />
+              </div>
+            </div>
+
+            <div class="error" id="error" hidden></div>
+            <div class="notice" id="success" hidden></div>
+
+            <div style="margin-top: 16px; display:flex; gap: 10px; flex-wrap: wrap;">
+              <a class="btn secondary" href="./index.html">Cancel</a>
+              <button id="submit" class="btn" type="button">Request booking</button>
+            </div>
+
+            <div class="notice" style="margin-top: 16px;">
+              After you submit, well send a voucher link to the email above so you can confirm your booking.
+            </div>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div class="container">ZAM Rentals</div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="./booking.js"></script>
+  </body>
+</html>
