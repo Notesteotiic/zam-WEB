@@ -1,150 +1,133 @@
-import { createTicket, listTicketsForUser } from './api.js';
-import { getEmailOrGuest, getSession, installNav, parseQuery, readFileAsDataUrl, setDisabled, showError } from './app.js';
+import { addTicketMessage, getOrCreateSupportTicket, getTicketById } from "./api.js";
+import {
+  formatDateTime,
+  getSession,
+  getUsernameOrFallback,
+  installNav,
+  setDisabled,
+  setHidden,
+  setText,
+  showError,
+} from "./app.js";
 
 installNav();
 
-const q = parseQuery();
-const carId = q.carId ? String(q.carId) : null;
+const elMessages = document.getElementById("messages");
+const elText = document.getElementById("text");
+const elSend = document.getElementById("sendBtn");
 
-const elContext = document.getElementById('contextText');
-const elLicenseField = document.getElementById('licenseField');
-const elEmailNote = document.getElementById('emailNote');
-
-const elSubject = document.getElementById('subject');
-const elDescription = document.getElementById('description');
-const elLicense = document.getElementById('license');
-const elSubmit = document.getElementById('submit');
-const elRefresh = document.getElementById('refresh');
-const elTickets = document.getElementById('tickets');
-
-const email = getEmailOrGuest();
-const session = getSession();
-const emailLabel = session?.email ? session.email : 'Guest';
-if (elEmailNote) elEmailNote.textContent = `Tickets are loaded for: ${emailLabel}`;
-
-if (elContext) {
-  if (carId) {
-    elContext.textContent = 'This ticket will be linked to the selected car. Driver\'s license image is required.';
-  } else {
-    elContext.textContent = 'Tip: include preferred dates, pickup/dropoff location, and any requirements.';
-  }
-}
-
-if (elLicenseField) elLicenseField.hidden = !carId;
-
-let submitting = false;
+let busy = false;
+let ticketId = null;
+let interval = null;
 
 function escapeHtml(s) {
   return String(s)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
-function renderTicketCard(t) {
-  const div = document.createElement('a');
-  div.className = 'car';
-  div.href = `./ticket.html?id=${encodeURIComponent(t.id)}`;
-
-  const statusLabel = String(t.status || '').toUpperCase();
-  const statusClass = t.status === 'accepted' ? 'good' : t.status === 'open' ? 'warn' : 'bad';
-
-  div.innerHTML = `
-    <div class="car-inner">
-      <div style="display:flex; justify-content: space-between; align-items:flex-start; gap: 10px;">
-        <div style="min-width:0;">
-          <p class="car-title">${escapeHtml(t.subject)}</p>
-          <p class="car-meta">${escapeHtml(t.description)}</p>
-        </div>
-        <span class="pill ${statusClass}">${statusLabel}</span>
-      </div>
-      <div style="display:flex; justify-content: space-between; align-items:flex-end;">
-        <div class="pill">${escapeHtml(new Date(t.createdAt).toLocaleString())}</div>
-        <span class="btn secondary">Open</span>
-      </div>
-    </div>
-  `;
-
-  return div;
+function setBusy(next) {
+  busy = next;
+  setDisabled("sendBtn", busy);
 }
 
-async function loadTickets() {
-  if (!elTickets) return;
-  elTickets.innerHTML = '';
+function render(ticket) {
+  if (!ticketId || !elMessages) return;
+  elMessages.innerHTML = "";
 
-  try {
-    const rows = await listTicketsForUser(email);
-    const list = Array.isArray(rows) ? rows : [];
-    if (list.length === 0) {
-      const p = document.createElement('div');
-      p.className = 'notice';
-      p.textContent = 'You have no tickets yet.';
-      elTickets.appendChild(p);
-      return;
-    }
+  const messages = Array.isArray(ticket?.messages) ? ticket.messages : [];
+  const session = getSession();
+  const isAdmin = !!session && session.role === "admin";
+  const myName = getUsernameOrFallback();
 
-    for (const t of list) elTickets.appendChild(renderTicketCard(t));
-  } catch (e) {
-    const msg = e && typeof e === 'object' && 'message' in e ? String(e.message) : 'Unable to load tickets';
-    const p = document.createElement('div');
-    p.className = 'error';
-    p.textContent = msg;
-    elTickets.appendChild(p);
-  }
-}
-
-function setSubmitting(next) {
-  submitting = next;
-  setDisabled('submit', submitting);
-  setDisabled('refresh', submitting);
-  if (elSubmit) elSubmit.textContent = submitting ? 'Please wait...' : 'Submit ticket';
-}
-
-async function handleSubmit() {
-  if (submitting) return;
-
-  const subject = (elSubject?.value ?? '').trim();
-  const description = (elDescription?.value ?? '').trim();
-
-  if (!subject || !description) {
-    showError('error', 'Please add a short subject and describe your request.');
+  if (messages.length === 0) {
+    const n = document.createElement("div");
+    n.className = "notice";
+    n.textContent = "No messages yet. Say hi to start the chat.";
+    elMessages.appendChild(n);
     return;
   }
 
-  let licenseImageUrl = null;
-  if (carId) {
-    const file = elLicense && elLicense.files && elLicense.files[0] ? elLicense.files[0] : null;
-    if (!file) {
-      showError('error', "Driver's license image is required for car-linked tickets.");
-      return;
-    }
-    try {
-      licenseImageUrl = await readFileAsDataUrl(file);
-    } catch (e) {
-      showError('error', e && typeof e === 'object' && 'message' in e ? String(e.message) : 'Unable to read image');
-      return;
-    }
-  }
-
-  setSubmitting(true);
-  showError('error', '');
-
-  try {
-    await createTicket(subject, description, email, carId, licenseImageUrl);
-    if (elSubject) elSubject.value = '';
-    if (elDescription) elDescription.value = '';
-    if (elLicense) elLicense.value = '';
-    await loadTickets();
-  } catch (e) {
-    showError('error', e && typeof e === 'object' && 'message' in e ? String(e.message) : 'Unable to create ticket');
-  } finally {
-    setSubmitting(false);
+  for (const m of messages) {
+    const div = document.createElement("div");
+    div.className = `message ${m.author === "client" ? "client" : "admin"}`;
+    const authorLabel = isAdmin
+      ? m.author === "admin"
+        ? "You"
+        : ticket.createdBy || "Client"
+      : m.author === "client"
+        ? myName || "You"
+        : "Admin";
+    div.innerHTML = `
+      <div class="meta">${escapeHtml(authorLabel)} • ${escapeHtml(formatDateTime(m.createdAt))}</div>
+      <div class="text">${escapeHtml(m.text)}</div>
+    `;
+    elMessages.appendChild(div);
   }
 }
 
-elSubmit?.addEventListener('click', handleSubmit);
-elRefresh?.addEventListener('click', loadTickets);
+async function load() {
+  const session = getSession();
+  if (!session?.email) {
+    setHidden("composer", true);
+    setHidden("loginNote", false);
+    showError("error", "");
+    return;
+  }
 
-loadTickets();
+  try {
+    setHidden("loginNote", true);
+    const t = await getOrCreateSupportTicket(session.email);
+    ticketId = t?.id ?? null;
+    if (!ticketId) throw new Error("Unable to start support chat");
+    const full = await getTicketById(ticketId);
+    render(full);
+  } catch (e) {
+    showError(
+      "error",
+      e && typeof e === "object" && "message" in e
+        ? String(e.message)
+        : "Unable to load support chat",
+    );
+  }
+}
+
+async function handleSend() {
+  if (busy) return;
+  if (!ticketId) return;
+
+  const text = (elText?.value ?? "").trim();
+  if (!text) return;
+
+  const session = getSession();
+  const author = !!session && session.role === "admin" ? "admin" : "client";
+
+  setBusy(true);
+  showError("error", "");
+
+  try {
+    await addTicketMessage(ticketId, author, text);
+    if (elText) elText.value = "";
+    await load();
+  } catch (e) {
+    showError(
+      "error",
+      e && typeof e === "object" && "message" in e
+        ? String(e.message)
+        : "Send failed",
+    );
+  } finally {
+    setBusy(false);
+  }
+}
+
+elSend?.addEventListener("click", handleSend);
+
+load();
+interval = window.setInterval(load, 3000);
+window.addEventListener("beforeunload", () => {
+  if (interval) window.clearInterval(interval);
+});

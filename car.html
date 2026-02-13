@@ -15,6 +15,7 @@
         </a>
         <nav class="nav">
           <a href="./index.html">Cars</a>
+          <a href="./bookings.html">My bookings</a>
           <a href="./tickets.html">Support</a>
           <a id="navMessagesLink" href="./messages.html">Messages</a>
           <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
@@ -41,11 +42,16 @@
               <div class="pill" id="availabilityPill"></div>
             </div>
 
-            <div style="margin-top: 14px;">
-              <div class="car" style="grid-column: span 12;">
+            <div style="margin-top: 14px">
+              <div class="car" style="grid-column: span 12">
                 <div class="car-inner">
-                  <div class="car-media">
-                    <img id="carImg" class="car-img" src="./LOGO.png" alt="Car" />
+                  <div class="car-media" style="height: 260px;">
+                    <img
+                      id="carImg"
+                      class="car-img"
+                      src="./LOGO.png"
+                      alt="Car"
+                    />
                   </div>
                 </div>
               </div>
@@ -53,28 +59,48 @@
 
             <div class="error" id="error" hidden></div>
 
-            <div class="controls" style="margin-top: 14px;">
-              <div class="field" style="grid-column: span 12;">
+            <div class="controls" style="margin-top: 14px">
+              <div class="field col-4">
                 <div class="label">Brand</div>
-                <div id="brand" class="input" style="display:flex; align-items:center;"></div>
+                <div
+                  id="brand"
+                  class="input"
+                  style="display: flex; align-items: center"
+                ></div>
               </div>
-              <div class="field" style="grid-column: span 12;">
+              <div class="field col-4">
                 <div class="label">Seats</div>
-                <div id="seats" class="input" style="display:flex; align-items:center;"></div>
+                <div
+                  id="seats"
+                  class="input"
+                  style="display: flex; align-items: center"
+                ></div>
               </div>
-              <div class="field" style="grid-column: span 12;">
+              <div class="field col-4">
                 <div class="label">Price</div>
-                <div id="price" class="input" style="display:flex; align-items:center;"></div>
+                <div
+                  id="price"
+                  class="input"
+                  style="display: flex; align-items: center"
+                ></div>
               </div>
             </div>
 
-            <div style="margin-top: 16px; display:flex; gap: 10px; flex-wrap: wrap;">
+            <div
+              style="
+                margin-top: 16px;
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+              "
+            >
               <a class="btn secondary" href="./index.html">Back</a>
               <a class="btn" id="bookingLink" href="#">Book this car</a>
             </div>
 
             <div class="notice">
-              Start your booking for this car. On the next page youll pick dates and enter your driver details.
+              Start your booking for this car. On the next page you'll pick
+              dates and enter your driver details.
             </div>
           </div>
         </section>

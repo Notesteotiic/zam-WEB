@@ -15,6 +15,7 @@
         </a>
         <nav class="nav">
           <a href="./index.html">Cars</a>
+          <a href="./bookings.html">My bookings</a>
           <a href="./tickets.html">Support</a>
           <a id="navMessagesLink" href="./messages.html">Messages</a>
           <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
@@ -29,54 +30,51 @@
       <div class="container">
         <section class="hero">
           <div class="hero-inner">
-            <div class="kicker">Inquiries</div>
-            <h1 class="title">Send an inquiry to ZAM</h1>
-            <p class="subtitle">Tell us what you need. We’ll reply in your messages.</p>
+            <div class="kicker">Support</div>
+            <h1 class="title">Chat with ZAM</h1>
+            <p class="subtitle">
+              Direct message the admin. One chat per account.
+            </p>
           </div>
         </section>
 
         <section class="card">
           <div class="card-inner">
-            <div class="row">
-              <div>
-                <div class="kicker">New inquiry</div>
-                <div class="notice" id="contextText" style="margin-top: 6px;"></div>
-              </div>
-            </div>
-
-            <div class="controls" style="margin-top: 14px;">
-              <div class="field" style="grid-column: span 12;">
-                <div class="label">Subject</div>
-                <input id="subject" class="input" placeholder="Short title, e.g. Delivery timing" />
-              </div>
-              <div class="field" style="grid-column: span 12;">
-                <div class="label">Details</div>
-                <textarea id="description" class="input" rows="5" placeholder="Describe your question or request" style="resize: vertical;"></textarea>
-              </div>
-
-              <div class="field" id="licenseField" style="grid-column: span 12;" hidden>
-                <div class="label">Driver's license (required for car-linked tickets)</div>
-                <input id="license" class="input" type="file" accept="image/*" />
-                <div class="notice">Pick an image file. It will be uploaded as a data URL (base64) like the mobile app.</div>
-              </div>
-
-              <div class="field" style="grid-column: span 12;">
-                <button id="submit" class="btn" type="button">Send inquiry</button>
-              </div>
-            </div>
-
             <div class="error" id="error" hidden></div>
 
-            <div style="margin-top: 24px;">
-              <div class="row" style="align-items: flex-end;">
-                <div>
-                  <div class="kicker">Your inquiries</div>
-                  <h2 style="margin: 6px 0 0; font-size: 18px; font-weight: 800;">Recent</h2>
-                </div>
-                <button id="refresh" class="btn secondary" type="button">Refresh</button>
+            <div style="margin-top: 14px">
+              <div class="kicker">Messages</div>
+              <div
+                id="messages"
+                style="margin-top: 12px; display: grid; gap: 10px"
+              ></div>
+            </div>
+
+            <div
+              style="
+                margin-top: 16px;
+                border-top: 1px solid var(--border);
+                padding-top: 14px;
+              "
+            >
+              <div class="notice" id="loginNote" hidden>
+                Please login to use Support chat.
               </div>
-              <div class="notice" id="emailNote"></div>
-              <div class="grid" id="tickets"></div>
+              <div class="controls" id="composer">
+                <div class="field" style="grid-column: span 12">
+                  <div class="label">Message</div>
+                  <textarea
+                    id="text"
+                    class="input"
+                    rows="3"
+                    placeholder="Type a message"
+                    style="resize: vertical"
+                  ></textarea>
+                </div>
+                <div class="field" style="grid-column: span 12">
+                  <button id="sendBtn" class="btn" type="button">Send</button>
+                </div>
+              </div>
             </div>
           </div>
         </section>

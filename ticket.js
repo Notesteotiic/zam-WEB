@@ -1,5 +1,5 @@
 import { addTicketMessage, getTicketById, updateTicketStatus } from './api.js';
-import { formatDateTime, getUsernameOrFallback, installNav, parseQuery, setDisabled, setHidden, setText, showError } from './app.js';
+import { formatDateTime, getSession, getUsernameOrFallback, installNav, parseQuery, setDisabled, setHidden, setText, showError } from './app.js';
 
 installNav();
 
@@ -56,8 +56,8 @@ function render() {
   const isAccepted = ticket.status === 'accepted';
   const isOpen = ticket.status === 'open';
   setHidden('closedNote', !isClosed);
-  setHidden('acceptNote', !isOpen);
-  setHidden('composer', isClosed || !isAccepted);
+  setHidden('acceptNote', true);
+  setHidden('composer', isClosed);
 
   if (elClose) elClose.hidden = isClosed;
 
@@ -65,6 +65,8 @@ function render() {
   elMessages.innerHTML = '';
 
   const messages = Array.isArray(ticket.messages) ? ticket.messages : [];
+  const session = getSession();
+  const isAdmin = !!session && session.role === 'admin';
   const myName = getUsernameOrFallback();
 
   if (messages.length === 0) {
@@ -78,7 +80,13 @@ function render() {
   for (const m of messages) {
     const div = document.createElement('div');
     div.className = `message ${m.author === 'client' ? 'client' : 'admin'}`;
-    const authorLabel = m.author === 'client' ? myName : 'Admin';
+    const authorLabel = isAdmin
+      ? m.author === 'admin'
+        ? 'You'
+        : ticket.createdBy || 'Client'
+      : m.author === 'client'
+        ? 'You'
+        : 'Admin';
     div.innerHTML = `
       <div class="meta">${escapeHtml(authorLabel)} • ${escapeHtml(formatDateTime(m.createdAt))}</div>
       <div class="text">${escapeHtml(m.text)}</div>
@@ -110,16 +118,19 @@ async function load() {
 
 async function handleSend() {
   if (busy) return;
-  if (!ticket || ticket.status !== 'accepted') return;
+  if (!ticket || ticket.status === 'closed') return;
 
   const text = (elText?.value ?? '').trim();
   if (!text) return;
+
+  const session = getSession();
+  const author = !!session && session.role === 'admin' ? 'admin' : 'client';
 
   setBusy(true);
   showError('error', '');
 
   try {
-    await addTicketMessage(ticket.id, 'client', text);
+    await addTicketMessage(ticket.id, author, text);
     if (elText) elText.value = '';
     await load();
   } catch (e) {

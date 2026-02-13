@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ZAM Rentals - Admin</title>
+    <title>ZAM Rentals - My bookings</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -16,9 +16,9 @@
         <nav class="nav">
           <a href="./index.html">Cars</a>
           <a href="./bookings.html">My bookings</a>
-          <a href="./admin.html?view=support">Support</a>
+          <a href="./tickets.html">Support</a>
           <a id="navMessagesLink" href="./messages.html">Messages</a>
-          <a id="navAdminLink" href="./admin.html">Admin</a>
+          <a id="navAdminLink" href="./admin.html" hidden>Admin</a>
           <span id="navMe" class="pill" title="Signed in as"></span>
           <a id="navAuthLink" href="./login.html">Login</a>
           <button id="navLogoutBtn" class="btn-link" hidden>Logout</button>
@@ -30,10 +30,10 @@
       <div class="container">
         <section class="hero">
           <div class="hero-inner">
-            <div class="kicker">Admin</div>
-            <h1 class="title">ZAM dashboard</h1>
+            <div class="kicker">Account</div>
+            <h1 class="title">My bookings</h1>
             <p class="subtitle">
-              Review booking requests and manage booking status.
+              View booking status, voucher link, and cancel before pickup.
             </p>
           </div>
         </section>
@@ -42,9 +42,9 @@
           <div class="card-inner">
             <div class="row" style="align-items: flex-end">
               <div>
-                <div class="kicker">Admin</div>
-                <h2 class="section-title" id="viewTitle">
-                  Confirmed applications
+                <div class="kicker">Bookings</div>
+                <h2 style="margin: 6px 0 0; font-size: 18px; font-weight: 800">
+                  Recent
                 </h2>
               </div>
               <button id="refresh" class="btn secondary" type="button">
@@ -52,28 +52,16 @@
               </button>
             </div>
 
-            <div style="margin-top: 12px; display:flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn secondary" type="button" data-nav-view="confirmed">
-                Bookings
-              </button>
-              <button class="btn secondary" type="button" data-nav-view="cars">
-                Cars
-              </button>
-              <button class="btn secondary" type="button" data-nav-view="support">
-                Support
-              </button>
-            </div>
-
             <div class="controls" style="margin-top: 14px">
               <div class="field" style="grid-column: span 4">
-                <div class="label">View</div>
-                <select id="view">
-                  <option value="confirmed">Confirmed</option>
+                <div class="label">Filter</div>
+                <select id="statusFilter" class="input">
+                  <option value="all">All</option>
                   <option value="pending">Pending</option>
-                  <option value="history">History</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="active">Active</option>
+                  <option value="completed">Completed</option>
                   <option value="cancelled">Cancelled</option>
-                  <option value="cars">Cars</option>
-                  <option value="support">Support</option>
                 </select>
               </div>
               <div class="field" style="grid-column: span 8">
@@ -81,14 +69,19 @@
                 <input
                   id="q"
                   class="input"
-                  placeholder="Search by customer, car, status, or location"
+                  placeholder="Search by car, dates, location, or status"
                 />
               </div>
             </div>
 
+            <div id="stats" class="grid" style="margin-top: 14px"></div>
+
+            <div class="notice" id="rules" style="margin-top: 10px">
+              You can cancel a booking any time before the pickup date.
+            </div>
             <div class="notice" id="lastUpdated"></div>
             <div class="error" id="error" hidden></div>
-            <div id="bookings" class="grid" style="margin-top: 16px"></div>
+            <div id="list" class="grid" style="margin-top: 16px"></div>
           </div>
         </section>
 
@@ -98,6 +91,6 @@
       </div>
     </main>
 
-    <script type="module" src="./admin.js"></script>
+    <script type="module" src="./bookings.js"></script>
   </body>
 </html>
